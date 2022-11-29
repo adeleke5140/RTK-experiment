@@ -2,23 +2,30 @@ import { useEffect} from 'react'
 import './App.css'
 import {
   fetchCountries,
-  countriesSelector
+  countries,
+  status,
+  hasError
 } from './features/countriesSlice'
 import {
   useAppSelector, useAppDispatch 
 } from './hooks/typed-hooks'
 
 function App() {
-  const countries = useAppSelector(countriesSelector)
+  const countriesData = useAppSelector(countries)
+  const countriesStatus = useAppSelector(status)
+  const countriesError = useAppSelector(hasError)
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchCountries())
-  },[])
+    if(countriesStatus === 'idle'){
+      dispatch(fetchCountries())
+    }
+  },[countriesStatus, dispatch])
 
   return (
     <div className="App">
-     Countries around the world
+     Countries around the world..
     </div>
   )
 }
